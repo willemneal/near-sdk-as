@@ -12,26 +12,35 @@
   "license": "(MIT AND Apache-2.0)",
   "dependencies": {
     "neon-cli": "^0.8.1",
-    "@mapbox/node-pre-gyp": "^1.0.5",
+    "node-pre-gyp": "amilajack/node-pre-gyp#neon-compat",
     "node-pre-gyp-github": "^1.4.3"
   },
   "devDependencies": {
-    "near-sdk-core": "^3.1.0",
-    "cargo-cp-artifact": "^0.1.4"
+    "cargo-cp-artifact": "^0.1.4",
+    "disk-utility": "^0.0.2",
+    "near-sdk-core": "^3.1.0"
   },
   "scripts": {
-    "install": "yarn build",
     "build:native": "cargo-cp-artifact -a cdylib near_sim_bindings native.node -- cargo build --message-format=json-render-diagnostics",
     "build:native:release": "yarn build:native --release && strip native.node",
     "build:lib": "tsc && node asconfig.js --target debug --wat",
     "build:release": "yarn build:native:release && tsc && node asconfig.js",
     "build": "yarn build:lib && yarn build:native",
     "test": "yarn jest --verbose",
-    "pretest": "yarn build"
+    "pretest": "yarn build",
+    "publish": "node-pre-gyp package && node-pre-gyp-github publish"
   },
   "files": [
     "native.node",
     "native.node.d.ts",
     "dist"
-  ]
+  ],
+  "binary": {
+    "module_name": "index",
+    "host": "https://github.com/willemneal/near-sdk-as/releases/download/",
+    "remote_path": "{version}",
+    "package_name": "{node_abi}-{platform}-{arch}.tar.gz",
+    "module_path": ".",
+    "pkg_path": "."
+  }
 }
