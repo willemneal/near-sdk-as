@@ -11,9 +11,10 @@ language: node_js
 
 node_js:
   - node
-  - 10
-  - 9
-  - 8
+  - 12
+  - 13
+  - 14
+  - 15
 
 cache:
   - yarn: true
@@ -37,6 +38,6 @@ before_install:
   - yarn && cd near-sdk-sim && yarn build
 
 script:
-  - cd near-sdk-sim && yarn test
+  - yarn test
   - COMMIT_MESSAGE=$(git log --format=%B --no-merges -n 1 | tr -d '\n')
   - if [[ ${COMMIT_MESSAGE} =~ "[publish binary]" ]]; then yarn test; fi
